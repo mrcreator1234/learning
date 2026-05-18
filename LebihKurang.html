@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuiz Lebih Daripada / Kurang Daripada</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#ffe08a;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#d97706;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:1.1rem;
+}
+
+.question-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px;
+    margin-bottom:12px;
+    background:#fff7db;
+    border-radius:15px;
+    border:3px solid transparent;
+    flex-wrap:wrap;
+}
+
+.question-text{
+    font-size:1.2rem;
+    font-weight:bold;
+    flex:1;
+    min-width:250px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.options{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.option-btn{
+    border:none;
+    border-radius:12px;
+    padding:12px 18px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    background:#ffd166;
+    transition:0.2s;
+}
+
+.option-btn:hover{
+    transform:scale(1.03);
+}
+
+.option-btn.selected{
+    background:#f59e0b;
+    color:white;
+}
+
+.correct{
+    border-color:#22c55e;
+    background:#dcfce7;
+}
+
+.wrong{
+    border-color:#ef4444;
+    background:#fee2e2;
+}
+
+.correct-answer{
+    font-size:0.95rem;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.controls{
+    margin-top:25px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.control-btn{
+    flex:1;
+    border:none;
+    border-radius:15px;
+    padding:15px;
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.check-btn{
+    background:#22c55e;
+    color:white;
+}
+
+.reset-btn{
+    background:#f97316;
+    color:white;
+}
+
+.score-box{
+    margin-top:20px;
+    text-align:center;
+    font-size:1.4rem;
+    font-weight:bold;
+}
+
+@media(max-width:600px){
+
+    .question-row{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .options{
+        width:100%;
+    }
+
+    .option-btn{
+        flex:1;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🍎 Kuiz Matematik</h1>
+
+    <div class="subtitle">
+        Pilih jawapan yang betul:
+        <b>Lebih Daripada</b> atau
+        <b>Kurang Daripada</b>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="controls">
+
+        <button class="control-btn check-btn" onclick="checkAnswers()">
+            ✅ Semak Jawapan
+        </button>
+
+        <button class="control-btn reset-btn" onclick="generateQuiz()">
+            🔄 Soalan Baru
+        </button>
+
+    </div>
+
+    <div class="score-box" id="scoreBox">
+        Skor: 0 / 15
+    </div>
+
+</div>
+
+<script>
+
+const TOTAL_QUESTIONS = 15;
+
+let questions = [];
+
+function randomNumber(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateQuiz(){
+
+    questions = [];
+
+    const container =
+        document.getElementById("questionsContainer");
+
+    container.innerHTML = "";
+
+    for(let i=0; i<TOTAL_QUESTIONS; i++){
+
+        const num1 = randomNumber(1, 20);
+        let num2 = randomNumber(1, 20);
+
+        while(num1 === num2){
+            num2 = randomNumber(1, 20);
+        }
+
+        const correctAnswer =
+            num1 > num2
+            ? "lebih"
+            : "kurang";
+
+        const q = {
+            num1,
+            num2,
+            correctAnswer,
+            selected:null
+        };
+
+        questions.push(q);
+
+        const row = document.createElement("div");
+        row.className = "question-row";
+        row.id = "row-" + i;
+
+        row.innerHTML = `
+
+    <div class="question-text">
+
+        <span style="font-size:1.5rem;">
+            ${num1}
+        </span>
+
+        <button
+            class="option-btn"
+            onclick="selectAnswer(${i}, 'lebih', this)">
+            Lebih Daripada
+        </button>
+
+        <button
+            class="option-btn"
+            onclick="selectAnswer(${i}, 'kurang', this)">
+            Kurang Daripada
+        </button>
+
+        <span style="font-size:1.5rem;">
+            ${num2}
+        </span>
+
+    </div>
+
+    <div class="correct-answer" id="answer-${i}"></div>
+
+`;
+
+        container.appendChild(row);
+    }
+
+    document.getElementById("scoreBox").innerHTML =
+        `Skor: 0 / ${TOTAL_QUESTIONS}`;
+}
+
+function selectAnswer(index, answer, button){
+
+    questions[index].selected = answer;
+
+    const parent =
+        button.parentElement;
+
+    const buttons =
+        parent.querySelectorAll(".option-btn");
+
+    buttons.forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+}
+
+function checkAnswers(){
+
+    let score = 0;
+
+    questions.forEach((q, index) => {
+
+        const row =
+            document.getElementById("row-" + index);
+
+        const answerDiv =
+            document.getElementById("answer-" + index);
+
+        row.classList.remove("correct");
+        row.classList.remove("wrong");
+
+        if(q.selected === q.correctAnswer){
+
+            score++;
+
+            row.classList.add("correct");
+
+            answerDiv.innerHTML =
+                "✅ Betul!";
+        }
+        else{
+
+            row.classList.add("wrong");
+
+            answerDiv.innerHTML =
+                `❌ Jawapan betul:
+                <b>${
+                    q.correctAnswer === "lebih"
+                    ? "Lebih Daripada"
+                    : "Kurang Daripada"
+                }</b>`;
+        }
+
+    });
+
+    document.getElementById("scoreBox").innerHTML =
+        `⭐ Skor: ${score} / ${TOTAL_QUESTIONS}`;
+}
+
+generateQuiz();
+
+</script>
+
+</body>
+</html>
