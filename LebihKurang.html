@@ -353,8 +353,8 @@ h1{
 
 const TOTAL_QUESTIONS = 15;
 
-// Default max value (sama seperti kod asal, nilai 200)
-let currentMaxValue = 200;   // akan guna nilai dari textbox
+// Default max value (sama seperti kod asal, nilai 100)
+let currentMaxValue = 100;   // akan guna nilai dari textbox
 
 // Fungsi untuk menjana nombor berdasarkan currentMaxValue
 function randomNumberGenerated(){
@@ -400,8 +400,8 @@ function syncMaxFromInput() {
             currentMaxValue = val;
         } else {
             // reset ke nilai selamat
-            currentMaxValue = 200;
-            inputElement.value = 200;
+            currentMaxValue = 100;
+            inputElement.value = 100;
         }
     }
 }
@@ -541,12 +541,12 @@ function checkAnswers(){
         `🎉 Skor: ${score} / ${TOTAL_QUESTIONS} 🎉`;
 }
 
-// Init: set currentMaxValue dari input (200) dan jana kuiz
+// Init: set currentMaxValue dari input (100) dan jana kuiz
 function init() {
     const inputElem = document.getElementById("maxNumberInput");
     if(inputElem) {
         currentMaxValue = parseInt(inputElem.value, 10);
-        if(isNaN(currentMaxValue) || currentMaxValue < 2) currentMaxValue = 200;
+        if(isNaN(currentMaxValue) || currentMaxValue < 2) currentMaxValue = 100;
         document.getElementById("currentMaxDisplay").innerText = `Maks: ${currentMaxValue}`;
     }
     generateQuiz();
