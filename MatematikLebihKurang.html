@@ -183,22 +183,50 @@ h1{
     font-size:1rem;
     font-weight:bold;
     cursor:pointer;
-    background:#fcd34d;
-    color:#78350f;
     transition:0.2s;
     box-shadow:0 3px 6px rgba(0,0,0,0.1);
 }
 
-.option-btn:hover{
-    transform:translateY(-2px);
-    background:#fbbf24;
-    box-shadow:0 6px 12px rgba(0,0,0,0.15);
+/* Lebih Daripada (>) button - Hijau terang */
+.option-btn.lebih-btn {
+    background: #10b981;
+    color: white;
+    border: 2px solid #059669;
 }
 
-.option-btn.selected{
-    background:#ea580c;
-    color:white;
-    box-shadow:0 2px 8px rgba(234,88,12,0.4);
+.option-btn.lebih-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(16,185,129,0.3);
+}
+
+.option-btn.lebih-btn.selected {
+    background: #047857;
+    color: white;
+    border-color: #065f46;
+    box-shadow: 0 2px 8px rgba(4,120,87,0.5);
+    transform: scale(0.98);
+}
+
+/* Kurang Daripada (<) button - Biru terang */
+.option-btn.kurang-btn {
+    background: #3b82f6;
+    color: white;
+    border: 2px solid #2563eb;
+}
+
+.option-btn.kurang-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(59,130,246,0.3);
+}
+
+.option-btn.kurang-btn.selected {
+    background: #1d4ed8;
+    color: white;
+    border-color: #1e40af;
+    box-shadow: 0 2px 8px rgba(29,78,216,0.5);
+    transform: scale(0.98);
 }
 
 .correct{
@@ -277,6 +305,17 @@ h1{
 
 .emoji-badge{
     font-size:1.4rem;
+}
+
+/* Animation for selected state */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(0.98); }
+}
+
+.option-btn.selected {
+    animation: pulse 0.2s ease;
 }
 
 @media(max-width:650px){
@@ -395,7 +434,7 @@ function applyMaxNumberAndRegenerate() {
     generateQuiz();
 }
 
-// Fungsi untuk refresh nilai max dari textbox (guna semasa generate jika perlu)
+// Fungsi untuk refresh nilai max dari input (guna semasa generate jika perlu)
 function syncMaxFromInput() {
     const inputElement = document.getElementById("maxNumberInput");
     if (inputElement) {
@@ -459,11 +498,11 @@ function generateQuiz(){
                 </span>
 
                 <div class="options">
-                    <button class="option-btn" onclick="selectAnswer(${i}, 'lebih', this)">
+                    <button class="option-btn lebih-btn" onclick="selectAnswer(${i}, 'lebih', this)">
                         🟢 Lebih Daripada &nbsp;>
                     </button>
-                    <button class="option-btn" onclick="selectAnswer(${i}, 'kurang', this)">
-                        🔴 Kurang Daripada &nbsp;<
+                    <button class="option-btn kurang-btn" onclick="selectAnswer(${i}, 'kurang', this)">
+                        🔵 Kurang Daripada &nbsp;<
                     </button>
                 </div>
 
