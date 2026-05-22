@@ -13,20 +13,18 @@ title: Laman Utama
 
 <h2>📂 Semua Kuiz & Latihan</h2>
 <div class="file-list">
-  {% for file in site.static_files %}
-    {% if file.extname == ".html" and file.name != "index.html" %}
+  {% comment %}Get all pages in the learning folder{% endcomment %}
+  {% for page in site.pages %}
+    {% if page.dir == "/learning/" and page.name != "index.md" and page.extname == ".html" %}
       
-      <!-- Try to read front matter, fallback to filename -->
-      {% assign quiz_page = site.pages | where: "path", file.path | first %}
-      {% if quiz_page.title %}
-        {% assign title = quiz_page.title %}
-      {% else %}
-        {% assign title = file.basename | replace: "_", " " | replace: "-", " " %}
-      {% endif %}
-      
-      <a href="{{ file.path }}" class="btn-link">
-        {{ title }}
+      <a href="{{ page.name }}" class="btn-link">
+        {% if page.title %}
+          {{ page.title }}
+        {% else %}
+          📝 {{ page.basename | replace: "_", " " | replace: "-", " " }}
+        {% endif %}
       </a>
+      
     {% endif %}
   {% endfor %}
 </div>
