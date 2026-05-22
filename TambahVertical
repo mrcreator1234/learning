@@ -1,0 +1,813 @@
+---
+title: "🍎 Latihan Tambah Vertical"
+description: "Latihan tambah - vertical"
+---
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Latihan Tambah Secara Vertikal | Matematik</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'Poppins', 'Courier New', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #1e8e3e 0%, #0b5e2e 100%);
+    margin: 0;
+    padding: 24px 16px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    background: #fffef7;
+    border-radius: 56px;
+    padding: 28px 24px 36px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ffd966;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    background: linear-gradient(120deg, #f97316, #eab308);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    background: #fef3c7;
+    padding: 12px 18px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b45309;
+    margin-bottom: 28px;
+    font-size: 1rem;
+    display: inline-block;
+    width: 100%;
+}
+
+/* max value panel */
+.max-panel {
+    background: #fffbeb;
+    border-radius: 80px;
+    padding: 18px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 2px solid #fed7aa;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.max-panel label {
+    font-weight: 700;
+    color: #92400e;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.max-panel input {
+    width: 130px;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #f59e0b;
+    border-radius: 60px;
+    background: white;
+    color: #78350f;
+    outline: none;
+    transition: 0.2s;
+}
+
+.max-panel input:focus {
+    border-color: #ea580c;
+    box-shadow: 0 0 0 3px #fed7aa;
+}
+
+.generate-btn {
+    background: #f97316;
+    border: none;
+    border-radius: 60px;
+    padding: 12px 32px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.generate-btn:hover {
+    background: #c2410c;
+    transform: scale(1.02);
+}
+
+.generate-btn:active {
+    transform: scale(0.98);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fef9e6;
+    border-radius: 48px;
+    margin: 20px 0;
+    color: #b45309;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px dashed #fcd34d;
+}
+
+.empty-state span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* Grid untuk soalan vertikal - menggunakan CSS Grid */
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 20px 0;
+}
+
+/* Kad soalan vertikal - gaya seperti gambar */
+.vertical-card {
+    background: #ffffff;
+    border-radius: 32px;
+    padding: 20px 16px 18px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    border: 2px solid #ffe4b5;
+    position: relative;
+}
+
+.vertical-card.card-correct {
+    background: #e6f9ef;
+    border-left: 8px solid #22c55e;
+    border-right: 2px solid #86efac;
+}
+
+.vertical-card.card-wrong {
+    background: #fff0f0;
+    border-left: 8px solid #ef4444;
+    border-right: 2px solid #fecaca;
+}
+
+.question-number {
+    font-size: 0.85rem;
+    color: #f97316;
+    font-weight: bold;
+    background: #fff0dd;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+}
+
+/* Layout vertikal */
+.vertical-expression {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #fef9e6;
+    border-radius: 28px;
+    padding: 20px 10px;
+    font-family: 'Courier New', 'Segoe UI', monospace;
+}
+
+.vertical-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    font-family: monospace;
+    letter-spacing: 4px;
+    color: #78350f;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: inset 0 1px 3px #0001, 0 2px 5px #e2e8f0;
+}
+
+.plus-sign {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #f97316;
+    margin: 5px 0;
+    text-align: left;
+    width: 100%;
+    padding-left: 30px;
+}
+
+.line-separator {
+    width: 80%;
+    height: 3px;
+    background: #fcd34d;
+    margin: 8px auto;
+    border-radius: 4px;
+}
+
+.answer-area-vertical {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.answer-input-vertical {
+    width: 120px;
+    padding: 12px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #fcd34d;
+    border-radius: 60px;
+    background: white;
+    font-family: monospace;
+    outline: none;
+}
+
+.answer-input-vertical:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px #ffedd5;
+}
+
+.feedback-vertical {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #fff3e0;
+    padding: 6px 12px;
+    border-radius: 40px;
+    text-align: center;
+    width: 100%;
+}
+
+.feedback-correct {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.feedback-wrong {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Button row */
+.action-bar {
+    display: flex;
+    gap: 20px;
+    margin-top: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 170px;
+    padding: 16px 12px;
+    border: none;
+    border-radius: 60px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+}
+
+.check-btn {
+    background: #16a34a;
+}
+.check-btn:hover {
+    background: #15803d;
+    transform: translateY(-3px);
+}
+.check-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.refresh-btn {
+    background: #f97316;
+}
+.refresh-btn:hover {
+    background: #ea580c;
+    transform: translateY(-3px);
+}
+.refresh-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.score-panel {
+    margin-top: 30px;
+    text-align: center;
+    background: #fef9c3;
+    padding: 15px;
+    border-radius: 60px;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #854d0e;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.reset-all {
+    background: #6b7280;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.reset-all:hover {
+    background: #4b5563;
+}
+.reset-all:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+    .container {
+        padding: 20px 16px;
+    }
+    .vertical-number {
+        font-size: 2rem;
+        padding: 4px 12px;
+        min-width: 100px;
+    }
+    .questions-grid {
+        grid-template-columns: 1fr;
+    }
+    .max-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .generate-btn {
+        width: 100%;
+    }
+    .plus-sign {
+        padding-left: 15px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>
+        🧮 Latihan Tambah (Susunan Vertikal) 📐
+        <span>✨</span>
+    </h1>
+    <div class="subtitle">
+        📌 Masukkan nilai maksimum, klik <strong>"JANA SOALAN"</strong> untuk mula &nbsp;|&nbsp; 15 soalan (bentuk lazim ke bawah)
+    </div>
+
+    <!-- Panel kawalan utama -->
+    <div class="max-panel">
+        <label>🔢 Nombor maksimum:</label>
+        <input type="number" id="maxNumberInput" value="99" min="1" max="9999" step="1" placeholder="cth: 100">
+        <button id="generateQuizBtn" class="generate-btn">✨ JANA SOALAN VERTIKAL ✨</button>
+        <div style="font-size:0.75rem; color:#b45309;">(nombor rawak 1 hingga nilai maksimum)</div>
+    </div>
+
+    <!-- Tempat soalan (grid untuk paparan vertikal) -->
+    <div id="questionsList">
+        <div class="empty-state">
+            <span>📐</span>
+            Belum ada soalan.<br>
+            Sila masukkan nombor maksimum dan tekan <strong>"JANA SOALAN"</strong>
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="action-btn check-btn" id="checkAllBtn" disabled>✅ Semak Jawapan</button>
+        <button class="action-btn refresh-btn" id="refreshQuizBtn" disabled>🔄 Soalan Baru</button>
+    </div>
+
+    <div class="score-panel" id="scorePanel">
+        🎯 Skor: 0 / 0 
+        <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>
+    </div>
+</div>
+
+<script>
+    // ======================= KONFIGURASI =======================
+    const TOTAL_QUESTIONS = 15;
+    let currentMax = 99;           
+    let questionsData = [];          // { num1, num2, correctSum, userAnswer, isMarkedCorrect }
+    let quizGenerated = false;       
+    
+    // DOM elements
+    const maxNumberInput = document.getElementById('maxNumberInput');
+    const generateBtn = document.getElementById('generateQuizBtn');
+    const checkAllBtn = document.getElementById('checkAllBtn');
+    const refreshBtn = document.getElementById('refreshQuizBtn');
+    const questionsContainer = document.getElementById('questionsList');
+    const scorePanel = document.getElementById('scorePanel');
+    
+    // ========== Fungsi utiliti ==========
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    // Jana soalan berdasarkan currentMax
+    function generateNewQuestions() {
+        const newQuestions = [];
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            let maxVal = Math.max(1, currentMax);
+            let num1 = getRandomInt(1, maxVal);
+            let num2 = getRandomInt(1, maxVal);
+            const correctSum = num1 + num2;
+            newQuestions.push({
+                num1: num1,
+                num2: num2,
+                correctSum: correctSum,
+                userAnswer: null,
+                isMarkedCorrect: false
+            });
+        }
+        return newQuestions;
+    }
+    
+    // Fungsi untuk memformat nombor dengan digit selaras (untuk gaya vertikal)
+    function formatVerticalNumber(num) {
+        return num.toString();
+    }
+    
+    // Render semua kad soalan secara VERTIKAL (seperti gambar lampiran)
+    function renderQuiz() {
+        if (!questionsContainer) return;
+        
+        if (!quizGenerated || questionsData.length === 0) {
+            questionsContainer.innerHTML = `
+                <div class="empty-state">
+                    <span>📐</span>
+                    Belum ada soalan.<br>
+                    Sila masukkan nombor maksimum dan tekan <strong>"JANA SOALAN"</strong>
+                </div>
+            `;
+            return;
+        }
+        
+        // Gunakan grid untuk susunan kad
+        const gridDiv = document.createElement('div');
+        gridDiv.className = 'questions-grid';
+        
+        for (let idx = 0; idx < questionsData.length; idx++) {
+            const q = questionsData[idx];
+            const card = document.createElement('div');
+            card.className = 'vertical-card';
+            
+            if (q.isMarkedCorrect === true) {
+                card.classList.add('card-correct');
+            } else if (q.isMarkedCorrect === false && q.userAnswer !== null && q.userAnswer !== undefined) {
+                card.classList.add('card-wrong');
+            }
+            
+            card.setAttribute('data-idx', idx);
+            
+            // Nombor soalan (1 hingga 15)
+            const numberSpan = document.createElement('div');
+            numberSpan.className = 'question-number';
+            numberSpan.innerText = `Soalan ${idx + 1}`;
+            
+            // Bahagian ungkapan vertikal (seperti dalam gambar)
+            const verticalExpr = document.createElement('div');
+            verticalExpr.className = 'vertical-expression';
+            
+            // Nombor atas (lebih besar/kecil ikut rawak, tapi paparan tetap susun ke bawah)
+            // Untuk meniru format lazim: letakkan nombor pertama di atas, nombor kedua di bawah dengan tanda +
+            const topNumber = document.createElement('div');
+            topNumber.className = 'vertical-number';
+            topNumber.innerText = formatVerticalNumber(q.num1);
+            topNumber.style.textAlign = 'right';
+            topNumber.style.paddingRight = '20px';
+            
+            const plusRow = document.createElement('div');
+            plusRow.className = 'plus-sign';
+            plusRow.innerText = `+  ${formatVerticalNumber(q.num2)}`;
+            
+            const line = document.createElement('div');
+            line.className = 'line-separator';
+            
+            verticalExpr.appendChild(topNumber);
+            verticalExpr.appendChild(plusRow);
+            verticalExpr.appendChild(line);
+            
+            // Kawasan jawapan
+            const answerArea = document.createElement('div');
+            answerArea.className = 'answer-area-vertical';
+            
+            const inputValue = (q.userAnswer !== null && q.userAnswer !== undefined) ? q.userAnswer : '';
+            
+            let feedbackMessage = '';
+            let feedbackClass = '';
+            if (q.isMarkedCorrect === true) {
+                feedbackMessage = `✅ Betul! (${q.num1} + ${q.num2} = ${q.correctSum})`;
+                feedbackClass = 'feedback-correct';
+            } else if (q.isMarkedCorrect === false && q.userAnswer !== null) {
+                feedbackMessage = `❌ Jawapan betul: ${q.correctSum}`;
+                feedbackClass = 'feedback-wrong';
+            } else {
+                feedbackMessage = '💡 Masukkan jumlah';
+                feedbackClass = '';
+            }
+            
+            const inputField = document.createElement('input');
+            inputField.type = 'number';
+            inputField.id = `answer_${idx}`;
+            inputField.className = 'answer-input-vertical';
+            inputField.placeholder = '?';
+            inputField.value = inputValue;
+            
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.id = `feedback_${idx}`;
+            feedbackDiv.className = `feedback-vertical ${feedbackClass}`;
+            feedbackDiv.innerText = feedbackMessage;
+            
+            answerArea.appendChild(inputField);
+            answerArea.appendChild(feedbackDiv);
+            
+            card.appendChild(numberSpan);
+            card.appendChild(verticalExpr);
+            card.appendChild(answerArea);
+            
+            gridDiv.appendChild(card);
+            
+            // Event listener untuk input
+            inputField.removeEventListener('input', handleInputEvent);
+            inputField.addEventListener('input', handleInputEvent);
+        }
+        
+        // Kosongkan container dan masukkan grid
+        questionsContainer.innerHTML = '';
+        questionsContainer.appendChild(gridDiv);
+        updateScoreDisplay();
+    }
+    
+    // Handler untuk input (simpan jawapan & reset status marking)
+    function handleInputEvent(event) {
+        const inputElement = event.target;
+        const match = inputElement.id.match(/answer_(\d+)/);
+        if (!match) return;
+        const idx = parseInt(match[1], 10);
+        if (isNaN(idx)) return;
+        
+        const rawValue = inputElement.value;
+        let numericValue = null;
+        if (rawValue !== '') {
+            numericValue = Number(rawValue);
+            if (isNaN(numericValue)) numericValue = null;
+        }
+        
+        questionsData[idx].userAnswer = numericValue;
+        questionsData[idx].isMarkedCorrect = false;
+        
+        // update feedback
+        const feedbackDiv = document.getElementById(`feedback_${idx}`);
+        if (feedbackDiv) {
+            if (numericValue !== null && numericValue !== '') {
+                feedbackDiv.innerHTML = '⌨️ Sedia untuk semak';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            } else {
+                feedbackDiv.innerHTML = '💡 Masukkan jumlah';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            }
+        }
+        
+        // remove styling card
+        const card = document.querySelector(`.vertical-card[data-idx="${idx}"]`);
+        if (card) {
+            card.classList.remove('card-correct', 'card-wrong');
+        }
+        
+        updateScoreDisplay();
+    }
+    
+    // Kira skor berdasarkan jawapan yang betul
+    function computeCurrentScore() {
+        let correctCount = 0;
+        for (let i = 0; i < questionsData.length; i++) {
+            const q = questionsData[i];
+            if (q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correctSum) {
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
+    
+    // Semak semua jawapan (set isMarkedCorrect dan update styling)
+    function checkAllAnswers() {
+        if (!quizGenerated || questionsData.length === 0) {
+            alert("Belum ada soalan! Sila jana soalan terlebih dahulu.");
+            return;
+        }
+        
+        let correctCount = 0;
+        for (let i = 0; i < questionsData.length; i++) {
+            const q = questionsData[i];
+            let isCorrect = false;
+            if (q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correctSum) {
+                isCorrect = true;
+                correctCount++;
+            }
+            q.isMarkedCorrect = isCorrect;
+            
+            // update card styling
+            const card = document.querySelector(`.vertical-card[data-idx="${i}"]`);
+            if (card) {
+                if (isCorrect) {
+                    card.classList.add('card-correct');
+                    card.classList.remove('card-wrong');
+                } else {
+                    card.classList.add('card-wrong');
+                    card.classList.remove('card-correct');
+                }
+            }
+            
+            // update feedback
+            const feedbackDiv = document.getElementById(`feedback_${i}`);
+            if (feedbackDiv) {
+                if (isCorrect) {
+                    feedbackDiv.innerHTML = `✅ Betul! (${q.num1} + ${q.num2} = ${q.correctSum})`;
+                    feedbackDiv.classList.add('feedback-correct');
+                    feedbackDiv.classList.remove('feedback-wrong');
+                } else {
+                    feedbackDiv.innerHTML = `❌ Salah. Jawapan betul: ${q.correctSum}  (${q.num1}+${q.num2})`;
+                    feedbackDiv.classList.add('feedback-wrong');
+                    feedbackDiv.classList.remove('feedback-correct');
+                }
+            }
+        }
+        updateScoreDisplay();
+    }
+    
+    // Reset semua jawapan
+    function resetAllAnswers() {
+        if (!quizGenerated || questionsData.length === 0) {
+            alert("Tiada soalan untuk direset. Jana soalan dahulu.");
+            return;
+        }
+        
+        for (let i = 0; i < questionsData.length; i++) {
+            questionsData[i].userAnswer = null;
+            questionsData[i].isMarkedCorrect = false;
+            
+            const inputBox = document.getElementById(`answer_${i}`);
+            if (inputBox) inputBox.value = '';
+            
+            const feedbackDiv = document.getElementById(`feedback_${i}`);
+            if (feedbackDiv) {
+                feedbackDiv.innerHTML = '💡 Masukkan jumlah';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            }
+            
+            const card = document.querySelector(`.vertical-card[data-idx="${i}"]`);
+            if (card) {
+                card.classList.remove('card-correct', 'card-wrong');
+            }
+        }
+        updateScoreDisplay();
+    }
+    
+    // Papar skor
+    function updateScoreDisplay() {
+        if (!quizGenerated || questionsData.length === 0) {
+            scorePanel.innerHTML = `🎯 Skor: 0 / 0 
+                <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>`;
+            const newReset = document.getElementById('hardResetBtn');
+            if (newReset) newReset.disabled = true;
+            return;
+        }
+        
+        const currentScore = computeCurrentScore();
+        scorePanel.innerHTML = `🎯 Skor: ${currentScore} / ${TOTAL_QUESTIONS} 
+            <button class="reset-all" id="hardResetBtn">🗑️ Reset Jawapan</button>`;
+        
+        const resetBtnElement = document.getElementById('hardResetBtn');
+        if (resetBtnElement) {
+            resetBtnElement.disabled = false;
+            resetBtnElement.removeEventListener('click', resetAllAnswersHandler);
+            resetBtnElement.addEventListener('click', resetAllAnswersHandler);
+        }
+    }
+    
+    function resetAllAnswersHandler() {
+        resetAllAnswers();
+    }
+    
+    // Jana soalan berdasarkan input max
+    function generateQuiz() {
+        let maxVal = parseInt(maxNumberInput.value, 10);
+        if (isNaN(maxVal) || maxVal < 1) {
+            alert("Sila masukkan nombor maksimum yang sah (minimum 1).");
+            maxNumberInput.value = 50;
+            maxVal = 50;
+        }
+        if (maxVal > 9999) {
+            maxVal = 9999;
+            maxNumberInput.value = 9999;
+        }
+        
+        currentMax = maxVal;
+        questionsData = generateNewQuestions();
+        quizGenerated = true;
+        
+        checkAllBtn.disabled = false;
+        refreshBtn.disabled = false;
+        
+        renderQuiz();
+        updateScoreDisplay();
+        
+        // skrol ke soalan
+        questionsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Jana semula dengan nilai max yang sama
+    function regenerateWithSameMax() {
+        if (!quizGenerated) {
+            generateQuiz();
+        } else {
+            let maxVal = parseInt(maxNumberInput.value, 10);
+            if (isNaN(maxVal) || maxVal < 1) maxVal = currentMax;
+            if (maxVal > 9999) maxVal = 9999;
+            currentMax = maxVal;
+            maxNumberInput.value = currentMax;
+            
+            questionsData = generateNewQuestions();
+            renderQuiz();
+            updateScoreDisplay();
+        }
+    }
+    
+    // ========== Init & Event Listeners ==========
+    function init() {
+        quizGenerated = false;
+        questionsData = [];
+        renderQuiz();   // empty state
+        
+        checkAllBtn.disabled = true;
+        refreshBtn.disabled = true;
+        
+        generateBtn.addEventListener('click', () => {
+            generateQuiz();
+        });
+        
+        checkAllBtn.addEventListener('click', () => {
+            if (!quizGenerated || questionsData.length === 0) {
+                alert("Sila jana soalan terlebih dahulu.");
+                return;
+            }
+            checkAllAnswers();
+        });
+        
+        refreshBtn.addEventListener('click', () => {
+            if (!quizGenerated) {
+                generateQuiz();
+            } else {
+                regenerateWithSameMax();
+            }
+        });
+    }
+    
+    init();
+</script>
+</body>
+</html>
