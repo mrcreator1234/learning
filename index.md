@@ -16,7 +16,7 @@ title: Laman Utama
   {% assign pages_sorted = site.pages | sort: "title" %}
   {% for page in pages_sorted %}
     {% if page.path contains ".html" and page.name != "index.html" and page.layout != "default" %}
-      <a href="{{ page.url }}" class="btn-link">
+      <a href="{{ page.url | prepend: site.baseurl }}" class="btn-link">
         📝 {{ page.title }}
       </a>
     {% endif %}
