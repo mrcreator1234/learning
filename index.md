@@ -13,16 +13,12 @@ title: Laman Utama
 
 <h2>📂 Semua Kuiz & Latihan</h2>
 <div class="file-list">
-  {% comment %}Get all pages in the learning folder{% endcomment %}
-  {% for page in site.pages %}
-    {% if page.dir == "/learning/" and page.name != "index.md" and page.extname == ".html" %}
+  {% for file in site.static_files %}
+    {% if file.extname == ".html" and file.name != "index.html" %}
       
-      <a href="{{ page.name }}" class="btn-link">
-        {% if page.title %}
-          {{ page.title }}
-        {% else %}
-          📝 {{ page.basename | replace: "_", " " | replace: "-", " " }}
-        {% endif %}
+      <a href="{{ file.name }}" class="btn-link">
+        {% assign title = file.basename | replace: "_", " " | replace: "-", " " %}
+        📝 {{ title }}
       </a>
       
     {% endif %}
