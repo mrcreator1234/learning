@@ -1,0 +1,927 @@
+---
+title: "🍎 Latihan Matematik Horizontal"
+description: "Latihan Matematik Horizontal"
+---
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Latihan Matematik Vertikal</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #1e8e3e 0%, #0b5e2e 100%);
+    margin: 0;
+    padding: 20px 12px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    background: #fffef7;
+    border-radius: 56px;
+    padding: 24px 20px 32px;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+    border: 1px solid #ffd966;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.9rem;
+    background: linear-gradient(120deg, #f97316, #eab308);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    background: #fef3c7;
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b45309;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    display: inline-block;
+    width: 100%;
+}
+
+/* ===== OPERATION SELECTOR ===== */
+.op-selector {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.op-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 28px;
+    border: 3px solid transparent;
+    border-radius: 24px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f3f4f6;
+    color: #6b7280;
+    min-width: 120px;
+}
+
+.op-btn .op-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.op-btn .op-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Addition theme */
+.op-btn.op-add { border-color: #fed7aa; }
+.op-btn.op-add.selected {
+    background: #fff7ed;
+    border-color: #f97316;
+    color: #c2410c;
+    box-shadow: 0 4px 14px rgba(249,115,22,0.3);
+    transform: translateY(-2px);
+}
+
+/* Subtraction theme */
+.op-btn.op-sub { border-color: #bfdbfe; }
+.op-btn.op-sub.selected {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+    box-shadow: 0 4px 14px rgba(59,130,246,0.3);
+    transform: translateY(-2px);
+}
+
+/* Multiplication theme */
+.op-btn.op-mul { border-color: #d8b4fe; }
+.op-btn.op-mul.selected {
+    background: #faf5ff;
+    border-color: #a855f7;
+    color: #7e22ce;
+    box-shadow: 0 4px 14px rgba(168,85,247,0.3);
+    transform: translateY(-2px);
+}
+
+/* Division theme */
+.op-btn.op-div { border-color: #99f6e4; }
+.op-btn.op-div.selected {
+    background: #f0fdfa;
+    border-color: #14b8a6;
+    color: #0f766e;
+    box-shadow: 0 4px 14px rgba(20,184,166,0.3);
+    transform: translateY(-2px);
+}
+
+/* ===== CONTROL PANEL ===== */
+.max-panel {
+    background: #fffbeb;
+    border-radius: 80px;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    border: 2px solid #fed7aa;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: border-color 0.3s, background 0.3s;
+}
+
+/* Panel colour shifts with operation */
+body.op-sub .max-panel  { border-color: #bfdbfe; background: #eff6ff; }
+body.op-mul .max-panel  { border-color: #d8b4fe; background: #faf5ff; }
+body.op-div .max-panel  { border-color: #99f6e4; background: #f0fdfa; }
+
+.max-panel label {
+    font-weight: 700;
+    color: #92400e;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+body.op-sub .max-panel label { color: #1d4ed8; }
+body.op-mul .max-panel label { color: #7e22ce; }
+body.op-div .max-panel label { color: #0f766e; }
+
+.max-panel input {
+    width: 120px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #f59e0b;
+    border-radius: 60px;
+    background: white;
+    color: #78350f;
+    outline: none;
+}
+body.op-sub .max-panel input { border-color: #3b82f6; color: #1e3a8a; }
+body.op-mul .max-panel input { border-color: #a855f7; color: #581c87; }
+body.op-div .max-panel input { border-color: #14b8a6; color: #134e4a; }
+
+.max-panel input:focus { box-shadow: 0 0 0 3px #fed7aa; }
+body.op-sub .max-panel input:focus { box-shadow: 0 0 0 3px #bfdbfe; }
+body.op-mul .max-panel input:focus { box-shadow: 0 0 0 3px #d8b4fe; }
+body.op-div .max-panel input:focus { box-shadow: 0 0 0 3px #99f6e4; }
+
+.generate-btn {
+    background: #f97316;
+    border: none;
+    border-radius: 60px;
+    padding: 10px 28px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+.generate-btn:hover { background: #c2410c; transform: scale(1.02); }
+body.op-sub .generate-btn { background: #3b82f6; }
+body.op-sub .generate-btn:hover { background: #1d4ed8; }
+body.op-mul .generate-btn { background: #a855f7; }
+body.op-mul .generate-btn:hover { background: #7e22ce; }
+body.op-div .generate-btn { background: #14b8a6; }
+body.op-div .generate-btn:hover { background: #0f766e; }
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #fef9e6;
+    border-radius: 48px;
+    margin: 20px 0;
+    color: #b45309;
+    font-weight: 600;
+    border: 2px dashed #fcd34d;
+}
+.empty-state span { font-size: 2.8rem; display: block; margin-bottom: 10px; }
+
+/* ===== GRID & CARDS ===== */
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+    margin: 20px 0;
+}
+
+.vertical-card {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 20px 16px 18px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+    border: 2px solid #ffe4b5;
+}
+.vertical-card.op-sub { border-color: #bfdbfe; }
+.vertical-card.op-mul { border-color: #e9d5ff; }
+.vertical-card.op-div { border-color: #99f6e4; }
+
+.vertical-card.card-correct {
+    background: #e6f9ef;
+    border-left: 8px solid #22c55e;
+}
+.vertical-card.card-wrong {
+    background: #fff0f0;
+    border-left: 8px solid #ef4444;
+}
+
+.question-number {
+    font-size: 0.8rem;
+    color: #f97316;
+    font-weight: bold;
+    background: #fff0dd;
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+}
+.op-sub .question-number { color: #3b82f6; background: #dbeafe; }
+.op-mul .question-number { color: #a855f7; background: #f3e8ff; }
+.op-div .question-number { color: #0f766e; background: #ccfbf1; }
+
+/* ===== VERTICAL EXPRESSION ===== */
+.vertical-expression-aligned {
+    background: #fef9e6;
+    border-radius: 24px;
+    padding: 16px 20px;
+    font-family: 'Courier New', monospace;
+    transition: background 0.3s;
+}
+.op-sub .vertical-expression-aligned { background: #eff6ff; }
+.op-mul .vertical-expression-aligned { background: #faf5ff; }
+.op-div .vertical-expression-aligned { background: #f0fdfa; }
+
+.aligned-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.top-number-aligned {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #78350f;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    min-width: 140px;
+    width: 140px;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: inset 0 1px 2px #0001, 0 2px 4px #e2e8f0;
+    font-family: 'Courier New', monospace;
+}
+.op-sub .top-number-aligned { color: #1e3a8a; }
+.op-mul .top-number-aligned { color: #581c87; }
+.op-div .top-number-aligned { color: #134e4a; }
+
+.operator-aligned-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin: 8px 0 6px;
+    gap: 8px;
+}
+
+.operator-symbol {
+    font-size: 2.2rem;
+    font-weight: bold;
+    background: transparent;
+    margin-right: 5px;
+    /* colour set per op via JS class */
+    color: #f97316;
+}
+.op-sub .operator-symbol { color: #3b82f6; }
+.op-mul .operator-symbol { color: #a855f7; }
+.op-div .operator-symbol { color: #14b8a6; }
+
+.second-number-aligned {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #78350f;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    min-width: 140px;
+    width: 140px;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: inset 0 1px 2px #0001, 0 2px 4px #e2e8f0;
+    font-family: 'Courier New', monospace;
+}
+.op-sub .second-number-aligned { color: #1e3a8a; }
+.op-mul .second-number-aligned { color: #581c87; }
+.op-div .second-number-aligned { color: #134e4a; }
+
+.line-separator-aligned {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 0 10px;
+}
+.line-stroke {
+    width: 140px;
+    height: 3px;
+    background: #f59e0b;
+    border-radius: 3px;
+}
+.op-sub .line-stroke { background: #3b82f6; }
+.op-mul .line-stroke { background: #a855f7; }
+.op-div .line-stroke { background: #14b8a6; }
+
+.answer-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.answer-input-aligned {
+    width: 140px;
+    min-width: 140px;
+    padding: 8px 20px;
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-align: center;
+    border: 2px solid #fcd34d;
+    border-radius: 20px;
+    background: white;
+    font-family: 'Courier New', monospace;
+    outline: none;
+    color: #78350f;
+    letter-spacing: 2px;
+    box-shadow: inset 0 1px 2px #0001, 0 2px 4px #e2e8f0;
+}
+.op-sub .answer-input-aligned { border-color: #93c5fd; color: #1e3a8a; }
+.op-mul .answer-input-aligned { border-color: #d8b4fe; color: #581c87; }
+.op-div .answer-input-aligned { border-color: #5eead4; color: #134e4a; }
+
+.answer-input-aligned:focus { border-color: #f97316; box-shadow: 0 0 0 3px #ffedd5; }
+.op-sub .answer-input-aligned:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px #bfdbfe; }
+.op-mul .answer-input-aligned:focus { border-color: #a855f7; box-shadow: 0 0 0 3px #e9d5ff; }
+.op-div .answer-input-aligned:focus { border-color: #14b8a6; box-shadow: 0 0 0 3px #99f6e4; }
+
+.answer-input-aligned::placeholder { font-size: 1.2rem; color: #fcd34d; letter-spacing: normal; }
+
+.feedback-aligned {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #fff3e0;
+    padding: 5px 12px;
+    border-radius: 40px;
+    text-align: center;
+    width: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 10px;
+}
+.feedback-correct { background: #dcfce7; color: #15803d; }
+.feedback-wrong   { background: #fee2e2; color: #b91c1c; }
+
+/* ===== ACTION BAR ===== */
+.action-bar {
+    display: flex;
+    gap: 18px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.action-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 14px 10px;
+    border: none;
+    border-radius: 60px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+.check-btn { background: #16a34a; }
+.check-btn:hover { background: #15803d; transform: translateY(-2px); }
+.check-btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+.refresh-btn { background: #f97316; }
+.refresh-btn:hover { background: #ea580c; transform: translateY(-2px); }
+.refresh-btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+body.op-sub .refresh-btn { background: #3b82f6; }
+body.op-sub .refresh-btn:hover { background: #1d4ed8; }
+body.op-mul .refresh-btn { background: #a855f7; }
+body.op-mul .refresh-btn:hover { background: #7e22ce; }
+body.op-div .refresh-btn { background: #14b8a6; }
+body.op-div .refresh-btn:hover { background: #0f766e; }
+
+.score-panel {
+    margin-top: 28px;
+    text-align: center;
+    background: #fef9c3;
+    padding: 12px;
+    border-radius: 60px;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #854d0e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.reset-all {
+    background: #6b7280;
+    border: none;
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.reset-all:hover { background: #4b5563; }
+.reset-all:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+    .container { padding: 18px 14px; }
+    .questions-grid { grid-template-columns: 1fr; }
+    .max-panel { flex-direction: column; align-items: stretch; }
+    .generate-btn { width: 100%; }
+    .op-btn { min-width: 90px; padding: 10px 16px; }
+    .top-number-aligned, .second-number-aligned {
+        min-width: 110px; width: 110px; font-size: 1.6rem; padding: 6px 12px;
+    }
+    .operator-symbol { font-size: 1.6rem; }
+    .answer-input-aligned { width: 110px; min-width: 110px; font-size: 1.6rem; padding: 6px 12px; }
+    .line-stroke { width: 110px; }
+}
+@media (min-width: 1024px) {
+    .questions-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body class="op-add">
+
+<div class="container">
+    <h1>🧮 Latihan Matematik Vertikal 📐</h1>
+    <div class="subtitle" id="mainSubtitle">
+        ✨ 🧸 Pilih operasi, tetapkan nilai maksimum, klik "JANA SOALAN"  |  16 soalan ✨
+    </div>
+
+    <!-- Operation selector -->
+    <div class="op-selector">
+        <button class="op-btn op-add selected" data-op="add">
+            <span class="op-icon">➕</span>
+            <span class="op-label">TAMBAH</span>
+        </button>
+        <button class="op-btn op-sub" data-op="sub">
+            <span class="op-icon">➖</span>
+            <span class="op-label">TOLAK</span>
+        </button>
+        <button class="op-btn op-mul" data-op="mul">
+            <span class="op-icon">✖️</span>
+            <span class="op-label">DARAB</span>
+        </button>
+        <button class="op-btn op-div" data-op="div">
+            <span class="op-icon">➗</span>
+            <span class="op-label">BAHAGI</span>
+        </button>
+    </div>
+
+    <!-- Control panel -->
+    <div class="max-panel">
+        <label id="maxLabel">🔢 Nilai maksimum setiap nombor:</label>
+        <input type="number" id="maxNumberInput" value="10" min="1" max="9999" step="1">
+        <button id="generateQuizBtn" class="generate-btn">📝 JANA SOALAN</button>
+        <div style="font-size:0.7rem; color:#b45309;" id="maxHint">(nombor 1 hingga nilai maksimum)</div>
+    </div>
+
+    <div id="questionsList">
+        <div class="empty-state">
+            <span>📐</span>
+            Pilih operasi dan klik "JANA SOALAN" untuk mulakan latihan
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="action-btn check-btn" id="checkAllBtn" disabled>✅ Semak Jawapan</button>
+        <button class="action-btn refresh-btn" id="refreshQuizBtn" disabled>🔄 Soalan Baru</button>
+    </div>
+
+    <div class="score-panel" id="scorePanel">
+        🎯 Skor: 0 / 0
+        <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>
+    </div>
+</div>
+
+<script>
+    const TOTAL_QUESTIONS = 16;
+    let currentMax = 10;
+    let currentOp  = 'add';   // 'add' | 'sub' | 'mul'
+    let questionsData  = [];
+    let quizGenerated  = false;
+
+    const maxNumberInput     = document.getElementById('maxNumberInput');
+    const generateBtn        = document.getElementById('generateQuizBtn');
+    const checkAllBtn        = document.getElementById('checkAllBtn');
+    const refreshBtn         = document.getElementById('refreshQuizBtn');
+    const questionsContainer = document.getElementById('questionsList');
+    const scorePanel         = document.getElementById('scorePanel');
+    const mainSubtitle       = document.getElementById('mainSubtitle');
+    const maxLabel           = document.getElementById('maxLabel');
+    const maxHint            = document.getElementById('maxHint');
+
+    /* ---- Operation config ---- */
+    const OPS = {
+        add: {
+            symbol: '+',
+            emoji: '➕',
+            name: 'Tambah',
+            bodyClass: 'op-add',
+            hint: '(nombor 1 hingga nilai maksimum)',
+            labelText: '🔢 Nilai maksimum setiap nombor:',
+            subtitle: '✨ 🧸 Pilih operasi, tetapkan nilai maksimum, klik "JANA SOALAN"  |  16 soalan ✨',
+            compute: (a, b) => a + b,
+            generate: (max) => {
+                const a = rnd(1, max), b = rnd(1, max);
+                return { num1: a, num2: b, correct: a + b };
+            },
+            feedbackWord: 'hasil tambah'
+        },
+        sub: {
+            symbol: '−',
+            emoji: '➖',
+            name: 'Tolak',
+            bodyClass: 'op-sub',
+            hint: '(num1 ≥ num2, jawapan tidak negatif)',
+            labelText: '🔢 Nilai maksimum setiap nombor:',
+            subtitle: '✨ 🧸 Latihan TOLAK — jawapan sentiasa ≥ 0  |  16 soalan ✨',
+            compute: (a, b) => a - b,
+            generate: (max) => {
+                // ensure num1 >= num2 so answer is never negative
+                const a = rnd(1, max);
+                const b = rnd(1, a);
+                return { num1: a, num2: b, correct: a - b };
+            },
+            feedbackWord: 'beza'
+        },
+        mul: {
+            symbol: '×',
+            emoji: '✖️',
+            name: 'Darab',
+            bodyClass: 'op-mul',
+            hint: '(nombor 1 hingga nilai maksimum)',
+            labelText: '🔢 Nilai maksimum setiap nombor:',
+            subtitle: '✨ 🧸 Latihan DARAB — hasil darab dua nombor  |  16 soalan ✨',
+            compute: (a, b) => a * b,
+            generate: (max) => {
+                const a = rnd(1, max), b = rnd(1, max);
+                return { num1: a, num2: b, correct: a * b };
+            },
+            feedbackWord: 'hasil darab'
+        },
+        div: {
+            symbol: '÷',
+            emoji: '➗',
+            name: 'Bahagi',
+            bodyClass: 'op-div',
+            hint: '(jawapan sentiasa nombor bulat, tiada baki)',
+            labelText: '🔢 Nilai maksimum pembahagi:',
+            subtitle: '✨ 🧸 Latihan BAHAGI — jawapan nombor bulat sahaja  |  16 soalan ✨',
+            compute: (a, b) => a / b,
+            generate: (max) => {
+                // Pick divisor (b) and quotient (correct) first → dividend = b × correct
+                // This guarantees a whole-number answer with no remainder
+                const b       = rnd(1, max);
+                const correct = rnd(1, max);
+                const a       = b * correct;   // dividend
+                return { num1: a, num2: b, correct };
+            },
+            feedbackWord: 'hasil bahagi'
+        }
+    };
+
+    function rnd(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    /* ---- Apply body theme when op changes ---- */
+    function applyOpTheme(op) {
+        document.body.className = OPS[op].bodyClass;
+        mainSubtitle.textContent = OPS[op].subtitle;
+        maxLabel.textContent     = OPS[op].labelText;
+        maxHint.textContent      = OPS[op].hint;
+    }
+
+    /* ---- Operation selector buttons ---- */
+    document.querySelectorAll('.op-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            currentOp = btn.dataset.op;
+            applyOpTheme(currentOp);
+            // Clear questions whenever operation changes
+            quizGenerated = false;
+            questionsData = [];
+            checkAllBtn.disabled = true;
+            refreshBtn.disabled  = true;
+            questionsContainer.innerHTML = `
+                <div class="empty-state">
+                    <span>📐</span>
+                    Belum ada soalan.<br>
+                    Tekan <strong>"JANA SOALAN"</strong> untuk mulakan
+                </div>`;
+            updateScoreDisplay();
+        });
+    });
+
+    /* ---- Generate questions ---- */
+    function generateNewQuestions() {
+        const maxVal = Math.max(1, currentMax);
+        const cfg    = OPS[currentOp];
+        const qs     = [];
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            const { num1, num2, correct } = cfg.generate(maxVal);
+            qs.push({ num1, num2, correct, op: currentOp, userAnswer: null, isMarkedCorrect: false });
+        }
+        return qs;
+    }
+
+    /* ---- Render ---- */
+    function renderQuiz() {
+        if (!questionsContainer) return;
+
+        if (!quizGenerated || questionsData.length === 0) {
+            questionsContainer.innerHTML = `
+                <div class="empty-state">
+                    <span>📐</span>
+                    Belum ada soalan.<br>
+                    Tekan <strong>"JANA SOALAN"</strong> untuk mulakan
+                </div>`;
+            return;
+        }
+
+        const gridDiv = document.createElement('div');
+        gridDiv.className = 'questions-grid';
+
+        for (let idx = 0; idx < questionsData.length; idx++) {
+            const q   = questionsData[idx];
+            const cfg = OPS[q.op];
+
+            /* Card */
+            const card = document.createElement('div');
+            card.className = `vertical-card op-${q.op}`;
+            if (q.isMarkedCorrect === true)                              card.classList.add('card-correct');
+            else if (q.isMarkedCorrect === false && q.userAnswer !== null) card.classList.add('card-wrong');
+            card.setAttribute('data-idx', idx);
+
+            /* Badge */
+            const badge = document.createElement('div');
+            badge.className = 'question-number';
+            badge.innerText = `Soalan ${idx + 1}`;
+
+            /* Yellow/coloured expression box */
+            const exprBox = document.createElement('div');
+            exprBox.className = 'vertical-expression-aligned';
+
+            // Row 1 – top number
+            const topRow = document.createElement('div');
+            topRow.className = 'aligned-row';
+            const topSpan = document.createElement('span');
+            topSpan.className = 'top-number-aligned';
+            topSpan.innerText = q.num1;
+            topRow.appendChild(topSpan);
+
+            // Row 2 – operator + second number
+            const opRow = document.createElement('div');
+            opRow.className = 'operator-aligned-row';
+            const opSym = document.createElement('span');
+            opSym.className = 'operator-symbol';
+            opSym.innerText = cfg.symbol;
+            const botSpan = document.createElement('span');
+            botSpan.className = 'second-number-aligned';
+            botSpan.innerText = q.num2;
+            opRow.appendChild(opSym);
+            opRow.appendChild(botSpan);
+
+            // Divider
+            const lineWrap = document.createElement('div');
+            lineWrap.className = 'line-separator-aligned';
+            const lineEl = document.createElement('div');
+            lineEl.className = 'line-stroke';
+            lineWrap.appendChild(lineEl);
+
+            // Answer input row (inside the coloured box)
+            const ansRow = document.createElement('div');
+            ansRow.className = 'answer-row';
+            const input = document.createElement('input');
+            input.type      = 'text';
+            input.inputMode = 'numeric';
+            input.pattern   = '[0-9]*';
+            input.id        = `answer_${idx}`;
+            input.className = 'answer-input-aligned';
+            input.placeholder = '?';
+            input.value = (q.userAnswer !== null) ? q.userAnswer : '';
+            ansRow.appendChild(input);
+
+            exprBox.appendChild(topRow);
+            exprBox.appendChild(opRow);
+            exprBox.appendChild(lineWrap);
+            exprBox.appendChild(ansRow);
+
+            /* Feedback (outside coloured box) */
+            let fbMsg = `💡 Masukkan ${cfg.feedbackWord}`;
+            let fbCls = '';
+            if (q.isMarkedCorrect === true) {
+                fbMsg = `✅ Betul! (${q.num1} ${cfg.symbol} ${q.num2} = ${q.correct})`;
+                fbCls = 'feedback-correct';
+            } else if (q.isMarkedCorrect === false && q.userAnswer !== null) {
+                fbMsg = `❌ Jawapan betul: ${q.correct}`;
+                fbCls = 'feedback-wrong';
+            }
+            const fbDiv = document.createElement('div');
+            fbDiv.id        = `feedback_${idx}`;
+            fbDiv.className = `feedback-aligned ${fbCls}`;
+            fbDiv.innerText = fbMsg;
+
+            card.appendChild(badge);
+            card.appendChild(exprBox);
+            card.appendChild(fbDiv);
+            gridDiv.appendChild(card);
+
+            input.addEventListener('input', handleInputEvent);
+        }
+
+        questionsContainer.innerHTML = '';
+        questionsContainer.appendChild(gridDiv);
+        updateScoreDisplay();
+    }
+
+    /* ---- Input handler ---- */
+    function handleInputEvent(e) {
+        const el = e.target;
+        el.value = el.value.replace(/[^0-9]/g, '');
+
+        const match = el.id.match(/answer_(\d+)/);
+        if (!match) return;
+        const idx = parseInt(match[1], 10);
+        if (isNaN(idx)) return;
+
+        const raw = el.value;
+        const num = raw !== '' ? Number(raw) : null;
+
+        questionsData[idx].userAnswer    = num;
+        questionsData[idx].isMarkedCorrect = false;
+
+        const fb = document.getElementById(`feedback_${idx}`);
+        if (fb) {
+            const cfg = OPS[questionsData[idx].op];
+            fb.innerHTML = num !== null ? '⌨️ Sedia untuk semak' : `💡 Masukkan ${cfg.feedbackWord}`;
+            fb.className = 'feedback-aligned';
+        }
+
+        const card = document.querySelector(`.vertical-card[data-idx="${idx}"]`);
+        if (card) card.classList.remove('card-correct', 'card-wrong');
+
+        updateScoreDisplay();
+    }
+
+    function computeCurrentScore() {
+        return questionsData.filter(q =>
+            q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correct
+        ).length;
+    }
+
+    /* ---- Check all ---- */
+    function checkAllAnswers() {
+        if (!quizGenerated || !questionsData.length) { alert("Belum ada soalan!"); return; }
+
+        for (let i = 0; i < questionsData.length; i++) {
+            const q   = questionsData[i];
+            const cfg = OPS[q.op];
+            const ok  = q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correct;
+            q.isMarkedCorrect = ok;
+
+            const card = document.querySelector(`.vertical-card[data-idx="${i}"]`);
+            if (card) { card.classList.toggle('card-correct', ok); card.classList.toggle('card-wrong', !ok); }
+
+            const fb = document.getElementById(`feedback_${i}`);
+            if (fb) {
+                if (ok) {
+                    fb.innerHTML  = `✅ Betul! (${q.num1} ${cfg.symbol} ${q.num2} = ${q.correct})`;
+                    fb.className  = 'feedback-aligned feedback-correct';
+                } else {
+                    fb.innerHTML  = `❌ Salah. Jawapan betul: ${q.correct} (${q.num1} ${cfg.symbol} ${q.num2})`;
+                    fb.className  = 'feedback-aligned feedback-wrong';
+                }
+            }
+        }
+        updateScoreDisplay();
+    }
+
+    /* ---- Reset answers ---- */
+    function resetAllAnswers() {
+        if (!quizGenerated || !questionsData.length) { alert("Tiada soalan untuk direset."); return; }
+
+        for (let i = 0; i < questionsData.length; i++) {
+            questionsData[i].userAnswer     = null;
+            questionsData[i].isMarkedCorrect = false;
+
+            const inp = document.getElementById(`answer_${i}`);
+            if (inp) inp.value = '';
+
+            const fb = document.getElementById(`feedback_${i}`);
+            if (fb) {
+                const cfg = OPS[questionsData[i].op];
+                fb.innerHTML = `💡 Masukkan ${cfg.feedbackWord}`;
+                fb.className = 'feedback-aligned';
+            }
+
+            const card = document.querySelector(`.vertical-card[data-idx="${i}"]`);
+            if (card) card.classList.remove('card-correct', 'card-wrong');
+        }
+        updateScoreDisplay();
+    }
+
+    /* ---- Score display ---- */
+    function updateScoreDisplay() {
+        if (!quizGenerated || !questionsData.length) {
+            scorePanel.innerHTML = `🎯 Skor: 0 / 0 <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>`;
+            return;
+        }
+        scorePanel.innerHTML = `🎯 Skor: ${computeCurrentScore()} / ${TOTAL_QUESTIONS} <button class="reset-all" id="hardResetBtn">🗑️ Reset Jawapan</button>`;
+        const btn = document.getElementById('hardResetBtn');
+        if (btn) btn.addEventListener('click', resetAllAnswers);
+    }
+
+    /* ---- Generate quiz ---- */
+    function generateQuiz() {
+        let maxVal = parseInt(maxNumberInput.value, 10);
+        if (isNaN(maxVal) || maxVal < 1) { maxNumberInput.value = 10; maxVal = 10; }
+        if (maxVal > 9999) { maxVal = 9999; maxNumberInput.value = 9999; }
+        currentMax = maxVal;
+
+        questionsData = generateNewQuestions();
+        quizGenerated = true;
+        checkAllBtn.disabled = false;
+        refreshBtn.disabled  = false;
+
+        renderQuiz();
+        updateScoreDisplay();
+        questionsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function regenerate() {
+        let maxVal = parseInt(maxNumberInput.value, 10);
+        if (isNaN(maxVal) || maxVal < 1) maxVal = currentMax;
+        if (maxVal > 9999) maxVal = 9999;
+        currentMax = maxVal;
+        maxNumberInput.value = currentMax;
+        questionsData = generateNewQuestions();
+        renderQuiz();
+        updateScoreDisplay();
+    }
+
+    /* ---- Init ---- */
+    function init() {
+        quizGenerated = false;
+        questionsData = [];
+        renderQuiz();
+        checkAllBtn.disabled = true;
+        refreshBtn.disabled  = true;
+
+        generateBtn.addEventListener('click', generateQuiz);
+        checkAllBtn.addEventListener('click', () => {
+            if (!quizGenerated || !questionsData.length) { alert("Sila jana soalan terlebih dahulu."); return; }
+            checkAllAnswers();
+        });
+        refreshBtn.addEventListener('click', () => {
+            if (!quizGenerated) generateQuiz(); else regenerate();
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
