@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Latihan Tambah Horizontal</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #1e8e3e 0%, #0b5e2e 100%);
+    margin: 0;
+    padding: 24px 16px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fffef7;
+    border-radius: 56px;
+    padding: 28px 24px 36px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ffd966;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    background: linear-gradient(120deg, #f97316, #eab308);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    background: #fef3c7;
+    padding: 12px 18px;
+    border-radius: 100px;
+    font-weight: 600;
+    color: #b45309;
+    margin-bottom: 28px;
+    font-size: 1rem;
+    display: inline-block;
+    width: 100%;
+}
+
+/* max value panel - utama untuk generate */
+.max-panel {
+    background: #fffbeb;
+    border-radius: 80px;
+    padding: 18px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 2px solid #fed7aa;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.max-panel label {
+    font-weight: 700;
+    color: #92400e;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.max-panel input {
+    width: 130px;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #f59e0b;
+    border-radius: 60px;
+    background: white;
+    color: #78350f;
+    outline: none;
+    transition: 0.2s;
+}
+
+.max-panel input:focus {
+    border-color: #ea580c;
+    box-shadow: 0 0 0 3px #fed7aa;
+}
+
+.generate-btn {
+    background: #f97316;
+    border: none;
+    border-radius: 60px;
+    padding: 12px 32px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.generate-btn:hover {
+    background: #c2410c;
+    transform: scale(1.02);
+}
+
+.generate-btn:active {
+    transform: scale(0.98);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fef9e6;
+    border-radius: 48px;
+    margin: 20px 0;
+    color: #b45309;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px dashed #fcd34d;
+}
+
+.empty-state span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.questions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin: 10px 0 20px;
+    padding: 0 6px;
+}
+
+.questions-header span {
+    background: #eef2ff;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
+.question-card {
+    background: #ffffff;
+    border-radius: 48px;
+    padding: 16px 22px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    border: 2px solid #ffe4b5;
+}
+
+.question-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 2;
+    min-width: 220px;
+}
+
+.addition-expression {
+    background: #fef9e6;
+    padding: 10px 24px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 800;
+    font-size: 1.9rem;
+    color: #9a3412;
+    box-shadow: inset 0 1px 3px #ffe3b3, 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.addition-expression span {
+    font-size: 2rem;
+    background: white;
+    padding: 0 12px;
+    border-radius: 50px;
+    min-width: 70px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-weight: 800;
+}
+
+.addition-expression .operator {
+    background: transparent;
+    font-size: 2rem;
+    padding: 0;
+    min-width: auto;
+}
+
+.equals-symbol {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f97316;
+}
+
+.answer-input-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: #f9fafb;
+    padding: 5px 15px 5px 20px;
+    border-radius: 80px;
+    border: 1px solid #fed7aa;
+}
+
+.answer-input-area label {
+    font-weight: 600;
+    color: #b45309;
+}
+
+.answer-box {
+    width: 100px;
+    padding: 12px 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #fcd34d;
+    border-radius: 60px;
+    background: white;
+    outline: none;
+    transition: 0.2s;
+    font-family: monospace;
+}
+
+.answer-box:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px #ffedd5;
+}
+
+.feedback {
+    min-width: 180px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #fff3e0;
+    padding: 6px 14px;
+    border-radius: 60px;
+    text-align: center;
+}
+
+/* status styling */
+.card-correct {
+    background: #e6f9ef;
+    border-left: 12px solid #22c55e;
+    border-right: 2px solid #86efac;
+}
+
+.card-wrong {
+    background: #fff0f0;
+    border-left: 12px solid #ef4444;
+    border-right: 2px solid #fecaca;
+}
+
+.feedback-correct {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.feedback-wrong {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+/* button row */
+.action-bar {
+    display: flex;
+    gap: 20px;
+    margin-top: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 170px;
+    padding: 16px 12px;
+    border: none;
+    border-radius: 60px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+}
+
+.check-btn {
+    background: #16a34a;
+}
+.check-btn:hover {
+    background: #15803d;
+    transform: translateY(-3px);
+}
+.check-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.refresh-btn {
+    background: #f97316;
+}
+.refresh-btn:hover {
+    background: #ea580c;
+    transform: translateY(-3px);
+}
+.refresh-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.score-panel {
+    margin-top: 30px;
+    text-align: center;
+    background: #fef9c3;
+    padding: 15px;
+    border-radius: 60px;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #854d0e;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.reset-all {
+    background: #6b7280;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.reset-all:hover {
+    background: #4b5563;
+}
+.reset-all:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+@media (max-width: 750px) {
+    .container {
+        padding: 20px 16px;
+    }
+    .addition-expression {
+        font-size: 1.3rem;
+        gap: 8px;
+        padding: 6px 16px;
+    }
+    .addition-expression span {
+        font-size: 1.4rem;
+        min-width: 50px;
+    }
+    .question-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .answer-input-area {
+        justify-content: space-between;
+    }
+    .feedback {
+        text-align: center;
+    }
+    .action-btn {
+        padding: 12px;
+    }
+    .max-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .generate-btn {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>
+        🧮 Latihan Operasi Tambah (Horizontal) ➕
+        <span>✨</span>
+    </h1>
+    <div class="subtitle">
+        🧸 Masukkan nilai maksimum, klik <strong>"JANA SOALAN"</strong> untuk mula &nbsp;|&nbsp; 15 soalan
+    </div>
+
+    <!-- Panel kawalan utama - pengguna wajib tekan Jana -->
+    <div class="max-panel">
+        <label>🔢 Nombor maksimum:</label>
+        <input type="number" id="maxNumberInput" value="10" min="1" max="9999" step="1" placeholder="cth: 100">
+        <button id="generateQuizBtn" class="generate-btn">✨ JANA SOALAN ✨</button>
+    </div>
+
+    <!-- Header / status soalan -->
+    <div class="questions-header">
+    </div>
+
+    <!-- Tempat soalan akan dipaparkan selepas tekan Jana -->
+    <div id="questionsList">
+        <div class="empty-state">
+            <span>📝</span>
+            Belum ada soalan.<br>
+            Sila masukkan nombor maksimum dan tekan <strong>"JANA SOALAN"</strong>
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="action-btn check-btn" id="checkAllBtn" disabled>✅ Semak Jawapan</button>
+        <button class="action-btn refresh-btn" id="refreshQuizBtn" disabled>🔄 Soalan Baru</button>
+    </div>
+
+    <div class="score-panel" id="scorePanel">
+        🎯 Skor: 0 / 0 
+        <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>
+    </div>
+</div>
+
+<script>
+    // ======================= KONFIGURASI =======================
+    const TOTAL_QUESTIONS = 15;
+    let currentMax = 100;           // nilai maksimum setiap nombor
+    let questionsData = [];          // { num1, num2, correctSum, userAnswer, isCorrectFlag (untuk styling) }
+    let quizGenerated = false;       // status sama ada soalan sudah dijana
+    
+    // DOM elements
+    const maxNumberInput = document.getElementById('maxNumberInput');
+    const generateBtn = document.getElementById('generateQuizBtn');
+    const checkAllBtn = document.getElementById('checkAllBtn');
+    const refreshBtn = document.getElementById('refreshQuizBtn');
+    const hardResetBtn = document.getElementById('hardResetBtn');
+    const questionsContainer = document.getElementById('questionsList');
+    const scorePanel = document.getElementById('scorePanel');
+    
+    // ========== Fungsi utiliti ==========
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    // Jana soalan berdasarkan currentMax (pastikan soalan baharu)
+    function generateNewQuestions() {
+        const newQuestions = [];
+        for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+            let maxVal = Math.max(1, currentMax);
+            let num1 = getRandomInt(1, maxVal);
+            let num2 = getRandomInt(1, maxVal);
+            const correctSum = num1 + num2;
+            newQuestions.push({
+                num1: num1,
+                num2: num2,
+                correctSum: correctSum,
+                userAnswer: null,
+                isMarkedCorrect: false,   // status selepas semak
+                isAnswered: false
+            });
+        }
+        return newQuestions;
+    }
+    
+    // Render semua kad soalan berdasarkan questionsData
+    function renderQuiz() {
+        if (!questionsContainer) return;
+        
+        // jika tiada soalan atau quiz belum dijana, tunjuk empty state
+        if (!quizGenerated || questionsData.length === 0) {
+            questionsContainer.innerHTML = `
+                <div class="empty-state">
+                    <span>📝</span>
+                    Belum ada soalan.<br>
+                    Sila masukkan nombor maksimum dan tekan <strong>"JANA SOALAN"</strong>
+                </div>
+            `;
+            return;
+        }
+        
+        questionsContainer.innerHTML = '';
+        
+        for (let idx = 0; idx < questionsData.length; idx++) {
+            const q = questionsData[idx];
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            // Guna class berdasarkan status marking (selepas semak)
+            if (q.isMarkedCorrect === true) {
+                card.classList.add('card-correct');
+            } else if (q.isMarkedCorrect === false && q.userAnswer !== null && q.userAnswer !== undefined) {
+                // jika jawapan salah dan sudah pernah diperiksa
+                card.classList.add('card-wrong');
+            } else {
+                card.classList.remove('card-correct', 'card-wrong');
+            }
+            
+            card.setAttribute('data-idx', idx);
+            
+            const leftDiv = document.createElement('div');
+            leftDiv.className = 'question-left';
+            
+            const expressionDiv = document.createElement('div');
+            expressionDiv.className = 'addition-expression';
+            expressionDiv.innerHTML = `
+                <span>${q.num1}</span>
+                <span class="operator">+</span>
+                <span>${q.num2}</span>
+                <span class="equals-symbol">=</span>
+                <span style="background:#fef3c7; padding:0 12px;">?</span>
+            `;
+            
+            const answerArea = document.createElement('div');
+            answerArea.className = 'answer-input-area';
+            // value untuk input
+            const inputValue = (q.userAnswer !== null && q.userAnswer !== undefined) ? q.userAnswer : '';
+            
+            let feedbackMessage = '';
+            let feedbackClass = '';
+            if (q.isMarkedCorrect === true) {
+                feedbackMessage = `✅ Betul! (${q.num1} + ${q.num2} = ${q.correctSum})`;
+                feedbackClass = 'feedback-correct';
+            } else if (q.isMarkedCorrect === false && q.userAnswer !== null) {
+                feedbackMessage = `❌ Salah. Jawapan betul: ${q.correctSum}`;
+                feedbackClass = 'feedback-wrong';
+            } else {
+                feedbackMessage = '💡 Masukkan jawapan anda';
+                feedbackClass = '';
+            }
+            
+            answerArea.innerHTML = `
+                <label>Jawapan:</label>
+                <input type="number" id="answer_${idx}" class="answer-box" placeholder="?" value="${inputValue}">
+                <div class="feedback ${feedbackClass}" id="feedback_${idx}">${feedbackMessage}</div>
+            `;
+            
+            leftDiv.appendChild(expressionDiv);
+            leftDiv.appendChild(answerArea);
+            card.appendChild(leftDiv);
+            questionsContainer.appendChild(card);
+            
+            // attach event listener untuk input
+            const inputField = document.getElementById(`answer_${idx}`);
+            if (inputField) {
+                // buang event lama dengan clone? kita attach baru
+                inputField.removeEventListener('input', handleInputEvent);
+                inputField.addEventListener('input', handleInputEvent);
+            }
+        }
+        
+        updateScoreDisplay();
+    }
+    
+    // Handler untuk input (simpan jawapan & reset status marking)
+    function handleInputEvent(event) {
+        const inputElement = event.target;
+        const match = inputElement.id.match(/answer_(\d+)/);
+        if (!match) return;
+        const idx = parseInt(match[1], 10);
+        if (isNaN(idx)) return;
+        
+        const rawValue = inputElement.value;
+        let numericValue = null;
+        if (rawValue !== '') {
+            numericValue = Number(rawValue);
+            if (isNaN(numericValue)) numericValue = null;
+        }
+        
+        // simpan jawapan pengguna
+        questionsData[idx].userAnswer = numericValue;
+        // reset status marking kerana jawapan berubah
+        questionsData[idx].isMarkedCorrect = false;
+        
+        // update feedback kepada neutral
+        const feedbackDiv = document.getElementById(`feedback_${idx}`);
+        if (feedbackDiv) {
+            if (numericValue !== null && numericValue !== '') {
+                feedbackDiv.innerHTML = '⌨️ Sedia untuk semak';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            } else {
+                feedbackDiv.innerHTML = '💡 Masukkan jawapan anda';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            }
+        }
+        
+        // remove card styling
+        const card = document.querySelector(`.question-card[data-idx="${idx}"]`);
+        if (card) {
+            card.classList.remove('card-correct', 'card-wrong');
+        }
+        
+        updateScoreDisplay();  // skor sementara (hanya untuk paparan, tapi marking belum)
+    }
+    
+    // Kira skor berdasarkan jawapan yang betul (tanpa mengira status isMarkedCorrect)
+    function computeCurrentScore() {
+        let correctCount = 0;
+        for (let i = 0; i < questionsData.length; i++) {
+            const q = questionsData[i];
+            if (q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correctSum) {
+                correctCount++;
+            }
+        }
+        return correctCount;
+    }
+    
+    // Semua jawapan disemak (betulkan setiap kad dan set isMarkedCorrect)
+    function checkAllAnswers() {
+        if (!quizGenerated || questionsData.length === 0) {
+            alert("Belum ada soalan! Sila jana soalan terlebih dahulu.");
+            return;
+        }
+        
+        let correctCount = 0;
+        for (let i = 0; i < questionsData.length; i++) {
+            const q = questionsData[i];
+            let isCorrect = false;
+            if (q.userAnswer !== null && !isNaN(q.userAnswer) && q.userAnswer === q.correctSum) {
+                isCorrect = true;
+                correctCount++;
+            } else {
+                isCorrect = false;
+            }
+            q.isMarkedCorrect = isCorrect;
+            
+            // update card class
+            const card = document.querySelector(`.question-card[data-idx="${i}"]`);
+            if (card) {
+                if (isCorrect) {
+                    card.classList.add('card-correct');
+                    card.classList.remove('card-wrong');
+                } else {
+                    card.classList.add('card-wrong');
+                    card.classList.remove('card-correct');
+                }
+            }
+            
+            // update feedback
+            const feedbackDiv = document.getElementById(`feedback_${i}`);
+            if (feedbackDiv) {
+                if (isCorrect) {
+                    feedbackDiv.innerHTML = `✅ Betul! (${q.num1} + ${q.num2} = ${q.correctSum})`;
+                    feedbackDiv.classList.add('feedback-correct');
+                    feedbackDiv.classList.remove('feedback-wrong');
+                } else {
+                    feedbackDiv.innerHTML = `❌ Salah. Jawapan betul: ${q.correctSum}  (${q.num1}+${q.num2})`;
+                    feedbackDiv.classList.add('feedback-wrong');
+                    feedbackDiv.classList.remove('feedback-correct');
+                }
+            }
+        }
+        
+        updateScoreDisplay();
+    }
+    
+    // Reset semua jawapan (kosongkan input, reset status)
+    function resetAllAnswers() {
+        if (!quizGenerated || questionsData.length === 0) {
+            alert("Tiada soalan untuk direset. Jana soalan dahulu.");
+            return;
+        }
+        
+        for (let i = 0; i < questionsData.length; i++) {
+            questionsData[i].userAnswer = null;
+            questionsData[i].isMarkedCorrect = false;
+            
+            const inputBox = document.getElementById(`answer_${i}`);
+            if (inputBox) inputBox.value = '';
+            
+            const feedbackDiv = document.getElementById(`feedback_${i}`);
+            if (feedbackDiv) {
+                feedbackDiv.innerHTML = '💡 Masukkan jawapan anda';
+                feedbackDiv.classList.remove('feedback-correct', 'feedback-wrong');
+            }
+            
+            const card = document.querySelector(`.question-card[data-idx="${i}"]`);
+            if (card) {
+                card.classList.remove('card-correct', 'card-wrong');
+            }
+        }
+        updateScoreDisplay();
+    }
+    
+    // Papar skor semasa (berdasarkan jawapan yang betul walaupun belum tekan semak)
+    function updateScoreDisplay() {
+        if (!quizGenerated || questionsData.length === 0) {
+            scorePanel.innerHTML = `🎯 Skor: 0 / 0 
+                <button class="reset-all" id="hardResetBtn" disabled>🗑️ Reset Jawapan</button>`;
+            const newReset = document.getElementById('hardResetBtn');
+            if (newReset) newReset.disabled = true;
+            return;
+        }
+        
+        const currentScore = computeCurrentScore();
+        scorePanel.innerHTML = `🎯 Skor: ${currentScore} / ${TOTAL_QUESTIONS} 
+            <button class="reset-all" id="hardResetBtn">🗑️ Reset Jawapan</button>`;
+        
+        // attach event ke reset button yang baru
+        const resetBtnElement = document.getElementById('hardResetBtn');
+        if (resetBtnElement) {
+            resetBtnElement.disabled = false;
+            resetBtnElement.removeEventListener('click', resetAllAnswersHandler);
+            resetBtnElement.addEventListener('click', resetAllAnswersHandler);
+        }
+    }
+    
+    // Handler untuk reset
+    function resetAllAnswersHandler() {
+        resetAllAnswers();
+    }
+    
+    // Proses jana soalan berdasarkan nilai dari input (WAJIB tekan butang)
+    function generateQuiz() {
+        // baca nilai max dari input
+        let maxVal = parseInt(maxNumberInput.value, 10);
+        if (isNaN(maxVal) || maxVal < 1) {
+            alert("Sila masukkan nombor maksimum yang sah (minimum 1).");
+            maxNumberInput.value = 10;
+            maxVal = 10;
+        }
+        if (maxVal > 9999) {
+            maxVal = 9999;
+            maxNumberInput.value = 9999;
+        }
+        
+        currentMax = maxVal;
+        
+        // jana soalan baru
+        questionsData = generateNewQuestions();
+        quizGenerated = true;
+        
+        // enable buttons yang berkaitan
+        checkAllBtn.disabled = false;
+        refreshBtn.disabled = false;
+        
+        // render soalan
+        renderQuiz();
+        
+        // pastikan score panel button reset aktif
+        updateScoreDisplay();
+        
+        // slight scroll untuk pengalaman baik
+        questionsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Jana semula dengan nilai max yang sama (tanpa perlu ubah input)
+    function regenerateWithSameMax() {
+        if (!quizGenerated) {
+            // jika belum pernah jana, lakukan generate berdasarkan currentMax dari input
+            generateQuiz();
+        } else {
+            // baca nilai max semasa dari input
+            let maxVal = parseInt(maxNumberInput.value, 10);
+            if (isNaN(maxVal) || maxVal < 1) maxVal = currentMax;
+            if (maxVal > 9999) maxVal = 9999;
+            currentMax = maxVal;
+            maxNumberInput.value = currentMax;
+            
+            questionsData = generateNewQuestions();
+            renderQuiz();
+            updateScoreDisplay();
+        }
+    }
+    
+    // ========== Init & Event Listeners ==========
+    function init() {
+        // State awal: tiada soalan, button disabled
+        quizGenerated = false;
+        questionsData = [];
+        renderQuiz();   // tunjuk empty state
+        
+        checkAllBtn.disabled = true;
+        refreshBtn.disabled = true;
+        
+        // Event untuk butang JANA SOALAN
+        generateBtn.addEventListener('click', () => {
+            generateQuiz();
+        });
+        
+        // Butang Semak Jawapan
+        checkAllBtn.addEventListener('click', () => {
+            if (!quizGenerated || questionsData.length === 0) {
+                alert("Sila jana soalan terlebih dahulu.");
+                return;
+            }
+            checkAllAnswers();
+        });
+        
+        // Butang Jana Semula (refresh dengan nilai yang sama)
+        refreshBtn.addEventListener('click', () => {
+            if (!quizGenerated) {
+                generateQuiz();
+            } else {
+                regenerateWithSameMax();
+            }
+        });
+        
+        // untuk reset button di score panel akan diattach dynamic
+        // initial hard reset button disabled melalui render
+    }
+    
+    // panggil init
+    init();
+</script>
+</body>
+</html>
