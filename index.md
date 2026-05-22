@@ -15,8 +15,17 @@ title: Laman Utama
 <div class="file-list">
   {% for file in site.static_files %}
     {% if file.extname == ".html" and file.name != "index.html" %}
+      
+      <!-- Try to read front matter, fallback to filename -->
+      {% assign quiz_page = site.pages | where: "path", file.path | first %}
+      {% if quiz_page.title %}
+        {% assign title = quiz_page.title %}
+      {% else %}
+        {% assign title = file.basename | replace: "_", " " | replace: "-", " " %}
+      {% endif %}
+      
       <a href="{{ file.path }}" class="btn-link">
-        📝 {{ file.basename | replace: "_", " " }}
+        {{ title }}
       </a>
     {% endif %}
   {% endfor %}
