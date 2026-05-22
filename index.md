@@ -13,14 +13,12 @@ title: Laman Utama
 
 <h2>📂 Semua Kuiz & Latihan</h2>
 <div class="file-list">
-  {% for file in site.static_files %}
-    {% if file.extname == ".html" and file.name != "index.html" %}
-      
-      <a href="{{ file.name }}" class="btn-link">
-        {% assign title = file.basename | replace: "_", " " | replace: "-", " " %}
-        📝 {{ title }}
+  {% assign pages_sorted = site.pages | sort: "title" %}
+  {% for page in pages_sorted %}
+    {% if page.path contains ".html" and page.name != "index.html" and page.layout != "default" %}
+      <a href="{{ page.url }}" class="btn-link">
+        📝 {{ page.title }}
       </a>
-      
     {% endif %}
   {% endfor %}
 </div>
